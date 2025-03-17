@@ -15,7 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import './Project.css'
 // import { useCollection } from '../../hooks/useCollection'
 import { useFirestore } from '../../hooks/useFirestore'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const categories = [
     {value: 'art', label:'Art'},
@@ -39,7 +39,7 @@ export const categories = [
 
 const ProjectUpdateForm = ({docTitle, docDueDate, docCompleted, docAssignedCategory, docAssignmentDetails, projectId, docCompletedDate, docGrade}) => {
     // const { user } = useAuthContext()
-    const history = useHistory()
+    const navigate = useNavigate()
     const { updateDocument, response } = useFirestore('projects')
     const [title, setTitle] = useState(docTitle);
     const [assignmentDetails, setAssignmentDetails] = useState(docAssignmentDetails);
