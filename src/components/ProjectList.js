@@ -3,7 +3,7 @@ import { isBefore, formatDistanceToNow, isPast, isFuture, isEqual } from "date-f
 
 import { Link } from 'react-router-dom'
 import './ProjectList.css'
-import toDate from 'date-fns/toDate'
+import { toDate } from 'date-fns'
 
 function compareDates(lDate){
   let current = new Date();
