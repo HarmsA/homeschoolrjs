@@ -1,6 +1,6 @@
 import React from 'react';
-import { formatDistanceToNow, isPast, isFuture, isEqual } from "date-fns";
-import { isBefore } from '../../utils/dateUtils';
+import { formatDistanceToNow } from "date-fns";
+import { isBefore, isPast, isFuture, isEqual } from '../../utils/dateUtils';
 
 import { Link } from 'react-router-dom'
 import './ProjectList.css'
