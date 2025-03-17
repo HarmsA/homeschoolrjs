@@ -32,31 +32,31 @@ function App() {
                 element={!user ? <Navigate to="/login" /> : <Dashboard />}
               />
               <Route path="/create">
-                {!user && <Redirect to="/login" />}
+                {!user && <Navigate to="/login" />}
                 {user && <Create />}
               </Route>
               <Route path="/projects/:id">
-                {!user && <Redirect to="/login" />}
+                {!user && <Navigate to="/login" />}
                 {user && <Project />}
               </Route>
               <Route path="/completed">
                 {user && <StoredCompleted />}
-                {!user && <Redirect to="/login" />}
+                {!user && <Navigate to="/login" />}
               </Route>
               <Route path="/not-published">
                 {user && <ProjectFutureAssignment />}
-                {!user && <Redirect to="/login" />}
+                {!user && <Navigate to="/login" />}
               </Route>
               <Route path="/completed/gridView">
                 {user && <StoredCompletedTable />}
-                {!user && <Redirect to="/login" />}
+                {!user && <Navigate to="/login" />}
               </Route>
               <Route path="/login">
-                {user && <Redirect to="/" />}
+                {user && <Navigate to="/" />}
                 {!user && <Login />}
               </Route>
               <Route path="/signup">
-                {user && <Redirect to="/" />}
+                {user && <Navigate to="/" />}
                 {!user && <Login />}
               </Route>
             </Routes>

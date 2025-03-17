@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 // import { useCollection } from '../../hooks/useCollection'
 import { useFirestore } from '../../hooks/useFirestore'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const categories = [
     {value: 'art', label:'Art'},
