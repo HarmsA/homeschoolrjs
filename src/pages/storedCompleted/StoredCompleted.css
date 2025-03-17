@@ -1,0 +1,11 @@
+.category-list li {
+  display: inline-block;
+  padding: 2px 7px;
+}
+.category-list {
+  margin: 5px;
+}
+.category-list li:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,8 +1,10 @@
 import React from 'react';
+import './AssignedNotPublished.css'
+import { useCollection } from '../hooks/useCollection'
+
 import isBefore from 'date-fns/isBefore'
 
 import { Link } from 'react-router-dom'
-import './ProjectList.css'
 import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
 import { isPast } from 'date-fns';
 import { isFuture } from "date-fns";
@@ -15,7 +17,7 @@ function compareDates(lDate){
     return true
   // console.log("lDate: ",lDate.toDate())
   // console.log("current: ", current)
-  return lDate.toDate()<=current;
+  return lDate.toDate()>=current;
 }
 
 function isOlder(d) {
@@ -45,20 +47,22 @@ function isToday(d) {
     return false
 }
 
-const ProjectList = ({ projects }) => {
+const AssignmentNotPublished = ({ projects }) => {
     const today = new Date();
     return (
       <div className="project-list">
-        {projects.length === 0 && <p>No projects yet!</p>}
+        {projects.length === 0 && <p>No Future Assignments!</p>}
         {projects.map((project) => (
           <React.Fragment key={project.id}>
-            {!project.completed && compareDates(project.liveDate) && (
+            {compareDates(project.liveDate) && (
               <Link to={`/projects/${project.id}`} key={project.id}>
                 <h4 style={{ textTransform: "capitalize" }}>{project.title}</h4>
                 <p style={{ textTransform: "capitalize" }}>
                   {project.category}
                 </p>
-                <div id="project-dates">
+                <p style={{fontStyle: 'italic'}}>Date to live: {project.liveDate}</p>
+                        <div id="project-dates">
+
                   <p
                     className={`date ${
                       isOlder(project.dueDate.toDate()) && "late"
@@ -82,4 +86,4 @@ const ProjectList = ({ projects }) => {
     );
 };
 
-export default ProjectList;
+export default AssignmentNotPublished;

@@ -1,0 +1,7 @@
+.completed a {
+  background-color: #FC9790;
+}
+.completed-header{
+  display: block;
+  margin-top: 60px;
+}
