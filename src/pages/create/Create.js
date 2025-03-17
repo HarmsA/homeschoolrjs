@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 // import styles from './Create.module.css'
 import {LocalizationProvider} from "@mui/x-date-pickers";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { CustomDateAdapter } from '../../utils/dateUtils';
 import {DatePicker} from "@mui/x-date-pickers";
 import { timestamp } from '../../firebase/config'
 import { useAuthContext } from '../../hooks/useAuthContext'
@@ -173,7 +173,7 @@ const Create = () => {
         <h2 className="page-title">Create Assignment</h2>
         {error && <h6 className="error">{error}</h6>}
         <form onSubmit={handleSubmit}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={CustomDateAdapter}>
             <Stack spacing={4} sx={{ width: "auto" }}>
               <TextField
                 id="outlined-required"
