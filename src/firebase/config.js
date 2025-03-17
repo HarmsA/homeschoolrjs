@@ -1,9 +1,10 @@
-
+// import dotenv from 'dotenv';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore, Timestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
+// dotenv.config();
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -13,7 +14,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 

@@ -186,7 +186,7 @@ const ProjectUpdateForm = ({
             {/*}*/}
             {error && <h6 className="error">{error}</h6>}
             <form onSubmit={handleSubmit}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={CustomDateAdapter}>
                     <Stack spacing={4} sx={{ width: "auto" }}>
                         <TextField
                             id="outlined-required"

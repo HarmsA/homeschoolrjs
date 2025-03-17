@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import {projectFirestore} from "../firebase/config";
+import { doc, onSnapshot } from 'firebase/firestore';
 
-export const useDocument = (collection, id) => {
+export const useDocument = (collectionName, id) => {
     const [document, setDocument] = useState(null);
     const [error, setError] = useState(null);
 //    realtime data for document
     useEffect(() => {
-        const docRef = projectFirestore.collection(collection).doc(id)
+        const docRef = doc(projectFirestore, collectionName, id);
 
         // firestore function, onSnapshot tell us when the document changes
         // this also returns an unsubscribe function
-        const unsubscribe = docRef.onSnapshot((snapshot) => {
-            if (snapshot.data()){
+        const unsubscribe = onSnapshot(docRef, (snapshot) => {
+            if (snapshot.exists()) {
                 //gives us the updated snapshot and all the old data, spread out and including the id of document
                 setDocument({...snapshot.data(), id: snapshot.id})
                 setError(null)
@@ -26,7 +27,7 @@ export const useDocument = (collection, id) => {
 
         return () => unsubscribe()
 
-    }, [collection, id]);
+    }, [collectionName, id]);
     return{document, error}
 };
 

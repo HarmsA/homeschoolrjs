@@ -1,7 +1,10 @@
 import {useEffect, useRef, useState} from 'react';
-import {projectFirestore} from "../firebase/config";
+import { projectFirestore } from "../firebase/config";
+import { collection, query as firestoreQuery, where, orderBy as firestoreOrderBy, onSnapshot } from 'firebase/firestore';
 
-export const useCollection = (collection, query1, queryCompare, query2, orderBy1, direction) => {
+
+
+export const useCollection = (collectionName, query1, queryCompare, query2, orderBy1, direction) => {
     const [documents, setDocuments] = useState(null);
     const [error, setError] = useState(null);
 
@@ -13,14 +16,17 @@ export const useCollection = (collection, query1, queryCompare, query2, orderBy1
     const query = useRef(query1, queryCompare, query2).current
     const orderBy = useRef(orderBy1, direction).current
     useEffect(() => {
-        let ref = projectFirestore.collection(collection)
-        if (query){
-            ref = ref.where(query1, queryCompare, query2)
+        let ref = collection(projectFirestore, collectionName);
+        let q = ref;
+
+        if (query) {
+            q = firestoreQuery(ref, where(query1, queryCompare, query2));
+
         }
-        if (orderBy){
-            ref = ref.orderBy(orderBy1,direction)
+        if (orderBy) {
+            q = firestoreQuery(q, firestoreOrderBy(orderBy1, direction));
         }
-        const unsubscribe = ref.onSnapshot((snapshot) => {
+        const unsubscribe = onSnapshot(q, (snapshot) => {
             let results = []
             // see firestore documentation on snapshot for code explanation
             snapshot.docs.forEach(doc => {
@@ -37,7 +43,8 @@ export const useCollection = (collection, query1, queryCompare, query2, orderBy1
     //    unsubscribe on unmount
         return () => unsubscribe()
 
-    }, [collection])
+    }, [collectionName, query1, queryCompare, query2, orderBy1, direction]);
+
     return {documents, error}
 };
 
