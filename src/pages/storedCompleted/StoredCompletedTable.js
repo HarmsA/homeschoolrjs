@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {Box, Typography} from "@mui/material";
 import {useCollection} from "../../hooks/useCollection";
-import { format } from 'date-fns'
+import format from 'date-fns/format'
 
 const StoredCompletedTable = () => {
     const {documents, error} = useCollection('projects','completed','==', true,'completedDate','desc')

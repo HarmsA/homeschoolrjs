@@ -31,34 +31,13 @@ function App() {
                 path="/"
                 element={!user ? <Navigate to="/login" /> : <Dashboard />}
               />
-              <Route path="/create">
-                {!user && <Navigate to="/login" />}
-                {user && <Create />}
-              </Route>
-              <Route path="/projects/:id">
-                {!user && <Navigate to="/login" />}
-                {user && <Project />}
-              </Route>
-              <Route path="/completed">
-                {user && <StoredCompleted />}
-                {!user && <Navigate to="/login" />}
-              </Route>
-              <Route path="/not-published">
-                {user && <ProjectFutureAssignment />}
-                {!user && <Navigate to="/login" />}
-              </Route>
-              <Route path="/completed/gridView">
-                {user && <StoredCompletedTable />}
-                {!user && <Navigate to="/login" />}
-              </Route>
-              <Route path="/login">
-                {user && <Navigate to="/" />}
-                {!user && <Login />}
-              </Route>
-              <Route path="/signup">
-                {user && <Navigate to="/" />}
-                {!user && <Login />}
-              </Route>
+              <Route path="/create" element={!user ? <Navigate to="/login" /> : <Create />} />
+              <Route path="/projects/:id" element={!user ? <Navigate to="/login" /> : <Project />} />
+              <Route path="/completed" element={!user ? <Navigate to="/login" /> : <StoredCompleted />} />
+              <Route path="/not-published" element={!user ? <Navigate to="/login" /> : <ProjectFutureAssignment />} />
+              <Route path="/completed/gridView" element={!user ? <Navigate to="/login" /> : <StoredCompletedTable />} />
+              <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+              <Route path="/signup" element={user ? <Navigate to="/" /> : <Login />} />
             </Routes>
           </div>
           <div className="footer"></div>
