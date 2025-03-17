@@ -53,23 +53,22 @@ export const isBefore = (date1, date2) => {
   return date1 < date2;
 };
 
-// Date adapter implementation
+// Custom date adapter for Material-UI
 export class CustomDateAdapter {
   constructor({ locale } = {}) {
     this.locale = locale;
   }
 
-  // Required methods
   date(value) {
     if (!value) return null;
     return new Date(value);
   }
 
-  parse(value, format) {
+  parse(value) {
     return new Date(value);
   }
 
-  format(date, format) {
+  format(date) {
     if (!date) return '';
     return date.toLocaleDateString(this.locale);
   }
