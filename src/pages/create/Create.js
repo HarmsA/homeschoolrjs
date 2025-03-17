@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
-// import styles from './Create.module.css'
 import {LocalizationProvider} from "@mui/x-date-pickers";
-import { CustomDateAdapter } from '../../utils/dateUtils';
 import {DatePicker} from "@mui/x-date-pickers";
 import { timestamp } from '../../firebase/config'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { Stack, TextField } from "@mui/material"
 import Select from '@mui/material/Select';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import Checkbox from '@mui/material/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-// import { useCollection } from '../../hooks/useCollection'
 import { useFirestore } from '../../hooks/useFirestore'
 import { useNavigate } from 'react-router-dom'
 
@@ -34,7 +29,7 @@ export const categories = [
     {value: 'science', label:'Science'},
     {value: 'spelling', label:'Spelling'},
     {value: 'vocabulary', label:'Vocabulary'},
-]
+];
 
 const Create = () => {
     const { user } = useAuthContext()
@@ -46,14 +41,6 @@ const Create = () => {
     const [liveDate, setLiveDate] = useState('');
     const [assignedCategory, setAssignedCategory] = useState('');
     const [error, setError] = useState(null);
-    // const isUpdating = props.isUpdating;
-    // const [isCompleted, setIsCompleted] = useState(props.completed);
-    // const [grade, setGrade] = useState(false);
-    // const today = new Date()
-
-    // const handleChange = (event) => {
-    //     setIsCompleted( event.target.checked );
-    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -79,93 +66,22 @@ const Create = () => {
             photoURL: user.photoURL,
             id: user.uid
         }
-        // Create Document
-        // if (!isUpdating){
-         const project = {
-           title,
-           details: assignmentDetails,
-           category: assignedCategory,
-           dueDate: timestamp.fromDate(new Date(dueDate)),
-           liveDate: timestamp.fromDate(new Date(liveDate)),
-           completedDate: "",
-           comments: [],
-           completed: false,
-           createdBy,
-           grade: null,
-         };
+        const project = {
+          title,
+          details: assignmentDetails,
+          category: assignedCategory,
+          dueDate: timestamp.fromDate(dueDate), //Corrected line
+          liveDate: timestamp.fromDate(liveDate), //Corrected line
+          completedDate: "",
+          comments: [],
+          completed: false,
+          createdBy,
+          grade: null,
+        };
         await addDocument(project)
         if (!response.error) {
-              navigate.push('/')
+              navigate('/')
         }
-        // }
-
-        // Updating document
-        // if(isUpdating){
-        //     const projectToUpdate = {
-        //         title,
-        //         details: assignmentDetails,
-        //         category: assignedCategory,
-        //         completed: isCompleted,
-        //         dueDate: timestamp.fromDate(new Date(dueDate)),
-        //         grade: grade,
-        //
-        //     }
-        //
-        //     if (isCompleted && !grade){
-        //         setError('If an assignment is completed a grade must be entered.')
-        //         return
-        //     }
-        //     if (!isCompleted && grade){
-        //         setError('Please check assignment completed when a grade is entered.')
-        //         return
-        //     }
-        //     if (grade) {
-        //         if (Number(grade) >= 0 && Number(grade) <= 100) {
-        //             await updateDocument(props.project.id, {
-        //                 grade: Number(grade),
-        //             })
-        //         }else{
-        //             setError('Grade must be between 0-100.')
-        //             return
-        //         }
-        //     }
-        //
-        //     if (!props.project.completedDate) {
-        //         await updateDocument(props.project.id, {
-        //             completedDate: timestamp.fromDate(new Date(today)),
-        //         })
-        //     }
-        //     if (props.project.title !== projectToUpdate.title) {
-        //         await updateDocument(props.project.id, {
-        //             title: projectToUpdate.title,
-        //         })
-        //     }
-        //
-        //     if (props.project.details !== projectToUpdate.details) {
-        //         await updateDocument(props.project.id, {
-        //             details: assignmentDetails,
-        //         })
-        //     }
-        //     if (props.project.category !== projectToUpdate.category) {
-        //         await updateDocument(props.project.id, {
-        //             category: projectToUpdate.category,
-        //         })
-        //     }
-        //     if (props.project.completed !== projectToUpdate.completed) {
-        //         await updateDocument(props.project.id, {
-        //             completed: projectToUpdate.completed,
-        //         })
-        //     }
-        //
-        //     if (props.project.dueDate !== projectToUpdate.category) {
-        //         await updateDocument(props.project.id, {
-        //             dueDate: timestamp.fromDate(new Date(dueDate)),
-        //         })
-        //     if (!response.error) {
-        //         history.push('/')
-        //     }
-        //     }
-        // }
     }
 
     return (
@@ -189,21 +105,6 @@ const Create = () => {
                 defaultValue={assignmentDetails}
                 onChange={(text) => setAssignmentDetails(text.target.value)}
               />
-              {/*{dueDate*/}
-              {/*    ? <DatePicker*/}
-              {/*        renderInput={(params) => <TextField {...params}/>}*/}
-              {/*        label="Set due date:"*/}
-              {/*        type="date"*/}
-              {/*        value={dueDate}*/}
-              {/*        sx={{width: 220}}*/}
-              {/*        InputLabelProps={{*/}
-              {/*            shrink: true,*/}
-              {/*        }}*/}
-              {/*        onChange={(newDate) => {*/}
-              {/*            setDueDate(newDate)*/}
-              {/*        }}*/}
-              {/*        date={null}*/}
-              {/*    />*/}
               <DatePicker
                 renderInput={(params) => <TextField {...params} />}
                 label="Set due date:"
@@ -232,7 +133,6 @@ const Create = () => {
                 }}
                 date={null}
               />
-              {/*}*/}
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-helper-label">
                   Category
@@ -253,32 +153,8 @@ const Create = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {/*{isUpdating &&*/}
-                {/*    <FormControlLabel*/}
-                {/*        control={*/}
-                {/*            <Checkbox*/}
-                {/*            checked={isCompleted}*/}
-                {/*            onChange={handleChange}*/}
-                {/*            name="checkedG"*/}
-                {/*            />*/}
-                {/*        }*/}
-                {/*        label="Completed"*/}
-                {/*        />*/}
-                {/*}*/}
-                {/*    {isUpdating &&*/}
-                {/*        <TextField*/}
-                {/*            type={'number'}*/}
-                {/*          id="outlined-required"*/}
-                {/*          label="Grade: "*/}
-                {/*          value={grade}*/}
-                {/*          onChange={(e) => setGrade(e.target.value)}*/}
-                {/*/>*/}
-                {/*    }*/}
               </FormControl>
-              {/*{!isUpdating*/}
               <button className="btn">Add Assignment</button>
-              {/*: <button className="btn">Update Assignment</button>*/}
-              {/*}*/}
             </Stack>
           </LocalizationProvider>
         </form>
