@@ -6,18 +6,27 @@ export const formatDate = (date) => {
 };
 
 // Calculate time distance from now
-export const formatDistanceToNow = (date) => {
+export const formatDistanceToNow = (date, options = {}) => {
   if (!date) return '';
   const now = new Date();
   const diffTime = Math.abs(now - date);
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+  const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
+  
+  let result = '';
+  if (diffDays > 0) result = `${diffDays} day${diffDays > 1 ? 's' : ''}`;
+  else if (diffHours > 0) result = `${diffHours} hour${diffHours > 1 ? 's' : ''}`;
+  else if (diffMinutes > 0) result = `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''}`;
+  else if (diffSeconds > 0) result = `${diffSeconds} second${diffSeconds > 1 ? 's' : ''}`;
+  else result = 'less than a second';
 
-  if (diffDays > 0) return `${diffDays} days ago`;
-  if (diffHours > 0) return `${diffHours} hours ago`;
-  if (diffMinutes > 0) return `${diffMinutes} minutes ago`;
-  return 'just now';
+  if (options.addSuffix) {
+    result = date > now ? `in ${result}` : `${result} ago`;
+  }
+  
+  return result;
 };
 
 // Check if date is in the past
