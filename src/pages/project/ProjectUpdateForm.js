@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 // import styles from './Create.module.css'
 import {LocalizationProvider} from "@mui/x-date-pickers";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { CustomDateAdapter } from '../../utils/dateUtils';
 import {DatePicker} from "@mui/x-date-pickers";
 import { timestamp } from '../../firebase/config'
 // import { useAuthContext } from '../../hooks/useAuthContext'

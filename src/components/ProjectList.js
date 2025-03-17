@@ -1,5 +1,5 @@
 import React from "react";
-import {formatDistanceToNow, isEqual} from "../utils/dateUtils";
+import { formatDistanceToNow, isEqual, isBefore } from "../utils/dateUtils";
 import { Link } from "react-router-dom";
 import "./ProjectList.css";
 
@@ -18,10 +18,7 @@ function isOlder(d) {
   current.setHours(0, 0, 0, 0);
   //   console.log("D: ", d)
   //   console.log("CURRENT: ", current);
-  if (d < current) {
-    return true;
-  } else;
-  return false;
+  return isBefore(d, current);
 }
 function isToday(d) {
   let current = new Date();

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './Project.css'
-import isBefore from "date-fns/isBefore";
+import { isBefore } from "../../utils/dateUtils";
 import {useFirestore} from "../../hooks/useFirestore";
 import { useNavigate } from 'react-router-dom';
 // import {Stack, TextField} from "@mui/material";
