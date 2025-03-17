@@ -3,7 +3,7 @@ import isBefore from 'date-fns/isBefore'
 
 import { Link } from 'react-router-dom'
 import './ProjectList.css'
-import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns";
 import { isPast } from 'date-fns';
 import { isFuture } from "date-fns";
 import toDate from 'date-fns/toDate'
