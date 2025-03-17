@@ -3,7 +3,7 @@ import { timestamp } from "../../firebase/config";
 import { useAuthContext} from "../../hooks/useAuthContext";
 import {useFirestore} from "../../hooks/useFirestore";
 import Avatar from "../../components/Avatar";
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import { formatDistanceToNow } from '../../utils/dateUtils';
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
