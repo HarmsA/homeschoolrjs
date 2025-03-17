@@ -5,7 +5,7 @@ import {
   isPast,
   isFuture,
   isEqual,
-} from "../../utils/dateUtils";
+} from "../utils/dateUtils";
 
 import { Link } from "react-router-dom";
 import "./ProjectList.css";
