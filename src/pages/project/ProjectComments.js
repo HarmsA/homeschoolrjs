@@ -145,4 +145,3 @@ const ProjectComments = ({project}) => {
 };
 
 export default ProjectComments;
-
