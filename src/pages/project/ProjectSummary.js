@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './Project.css'
 import isBefore from "date-fns/isBefore";
 import {useFirestore} from "../../hooks/useFirestore";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import {Stack, TextField} from "@mui/material";
 // import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 // import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";

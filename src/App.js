@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 // import useAuthContext from 'hooks/useAuthContext'
 
 // import Signup from "./pages/signup/signup";
@@ -26,11 +26,8 @@ function App() {
 
           <div className="container">
             <Navbar />
-            <Switch>
-              <Route exact path="/">
-                {!user && <Redirect to="/login" />}
-                {user && <Dashboard />}
-              </Route>
+            <Routes>
+              <Route path="/" element={!user ? <Navigate to="/login" /> : <Dashboard />} />
               <Route path="/create">
                 {!user && <Redirect to="/login" />}
                 {user && <Create />}
