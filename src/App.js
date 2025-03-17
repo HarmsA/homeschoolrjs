@@ -27,7 +27,10 @@ function App() {
           <div className="container">
             <Navbar />
             <Routes>
-              <Route path="/" element={!user ? <Navigate to="/login" /> : <Dashboard />} />
+              <Route
+                path="/"
+                element={!user ? <Navigate to="/login" /> : <Dashboard />}
+              />
               <Route path="/create">
                 {!user && <Redirect to="/login" />}
                 {user && <Create />}
@@ -56,7 +59,7 @@ function App() {
                 {user && <Redirect to="/" />}
                 {!user && <Login />}
               </Route>
-            </Switch>
+            </Routes>
           </div>
           <div className="footer"></div>
         </BrowserRouter>
