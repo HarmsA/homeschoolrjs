@@ -38,7 +38,7 @@ export const categories = [
 
 const Create = () => {
     const { user } = useAuthContext()
-    const history = useHistory()
+    const navigate = useNavigate()
     const { addDocument, response } = useFirestore('projects')
     const [title, setTitle] = useState('');
     const [assignmentDetails, setAssignmentDetails] = useState('');
