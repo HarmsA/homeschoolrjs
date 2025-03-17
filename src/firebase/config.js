@@ -1,8 +1,9 @@
-import firebase from "firebase/app";
-import 'firebase/firestore'
-import 'firebase/auth'
-import 'firebase/storage'
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -13,12 +14,15 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID
 };
 
-firebase.initializeApp(firebaseConfig)
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-const projectFirestore = firebase.firestore()
-const projectAuth = firebase.auth()
-const projectStorage = firebase.storage()
+// Initialize services
+const projectFirestore = getFirestore(app);
+const projectAuth = getAuth(app);
+const projectStorage = getStorage(app);
 
-const timestamp = firebase.firestore.Timestamp
+// Timestamp equivalent
+const timestamp = projectFirestore.Timestamp;
 
-export {projectFirestore, projectAuth, timestamp, projectStorage};
+export { projectFirestore, projectAuth, projectStorage, timestamp };
