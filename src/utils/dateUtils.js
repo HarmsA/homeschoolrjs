@@ -20,6 +20,26 @@ export const formatDistanceToNow = (date) => {
   return 'just now';
 };
 
+// Check if date is in the past
+export const isPast = (date) => {
+  if (!date) return false;
+  return date < new Date();
+};
+
+// Check if date is in the future
+export const isFuture = (date) => {
+  if (!date) return false;
+  return date > new Date();
+};
+
+// Check if two dates are equal (comparing year, month, and day)
+export const isEqual = (date1, date2) => {
+  if (!date1 || !date2) return false;
+  return date1.getFullYear() === date2.getFullYear() &&
+         date1.getMonth() === date2.getMonth() &&
+         date1.getDate() === date2.getDate();
+};
+
 // Check if date is before another date
 export const isBefore = (date1, date2) => {
   if (!date1 || !date2) return false;
