@@ -95,7 +95,7 @@ const Create = () => {
          };
         await addDocument(project)
         if (!response.error) {
-            history.push('/')
+              navigate.push('/')
         }
         // }
 
