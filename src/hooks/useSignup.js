@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import {projectAuth, projectStorage, projectFirestore} from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { collection } from 'firebase/firestore';
+
 
 export const useSignup = () => {
     const [isCancelled,setIsCancelled] = useState(false);
@@ -30,7 +32,7 @@ export const useSignup = () => {
             await res.user.updateProfile({displayName, photoURL:imgUrl})
 
             // Create a user document with the doc's id the users uid
-            await projectFirestore.collection('users').doc(res.user.uid).set({
+            await collection(projectFirestore, 'users').doc(res.user.uid).set({
                 online: true,
                 displayName,
                 email,

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-// import styles from './Create.module.css'
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { CustomDateAdapter } from "../../utils/dateUtils";
-import { DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
+
+// import { CustomDateAdapter } from "../../utils/dateUtils";
 import { timestamp } from "../../firebase/config";
 // import { useAuthContext } from '../../hooks/useAuthContext'
 import { FormControlLabel, Stack, TextField } from "@mui/material";
@@ -186,7 +187,7 @@ const ProjectUpdateForm = ({
             {/*}*/}
             {error && <h6 className="error">{error}</h6>}
             <form onSubmit={handleSubmit}>
-                <LocalizationProvider dateAdapter={CustomDateAdapter}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Stack spacing={4} sx={{ width: "auto" }}>
                         <TextField
                             id="outlined-required"

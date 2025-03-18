@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 import { timestamp } from "../../firebase/config";
-import { CustomDateAdapter } from "../../utils/dateUtils";
+// import { CustomDateAdapter } from "../../utils/dateUtils";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Stack, TextField } from "@mui/material";
 import Select from "@mui/material/Select";
@@ -93,7 +94,7 @@ const Create = () => {
       <h2 className="page-title">Create Assignment</h2>
       {error && <h6 className="error">{error}</h6>}
       <form onSubmit={handleSubmit}>
-        <LocalizationProvider dateAdapter={CustomDateAdapter}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Stack spacing={4} sx={{ width: "auto" }}>
             <TextField
               id="outlined-required"
