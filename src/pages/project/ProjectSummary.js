@@ -15,11 +15,10 @@ const ProjectSummary = ({ project }) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const completed = project.completed;
-    const grade = project.grade;
-    // const [error, setError] = useState(null);
+
     const handleClick = () => {
         deleteDocument(project.id);
-        navigate.push("/");
+        navigate("/");
     };
 
     return (

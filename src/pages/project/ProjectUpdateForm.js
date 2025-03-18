@@ -174,7 +174,7 @@ const ProjectUpdateForm = ({
                 dueDate: timestamp.fromDate(new Date(dueDate)),
             });
             if (!response.error) {
-                navigate.push("/");
+                navigate("/");
             }
         }
     };
