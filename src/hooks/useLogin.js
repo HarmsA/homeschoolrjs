@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import {projectAuth, projectFirestore} from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
-import { collection } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
+const projectAuth = getAuth();
+const projectFirestore = getFirestore();
 
 export const useLogin = () => {
     const [isCancelled, setIsCancelled] = useState(false);
@@ -15,19 +17,18 @@ export const useLogin = () => {
         setIsPending(true)
 
         try{
-            const res = await projectAuth.signInWithEmailAndPassword(email, password)
+            const res = await signInWithEmailAndPassword(projectAuth,email, password)
 
-            //update user online status to true
-            await collection(projectFirestore, 'users')
-                .doc(res.user.uid)
-                .update({online:true})
+            // Update user online status to true
+            const userDocRef = doc(projectFirestore, 'users', res.user.uid);
+            await updateDoc(userDocRef, { online: true });
 
         //    dispatch logout action
-            dispatch({type: 'LOGIN', payload: res.user})
+            dispatch({ type: 'LOGIN', payload: res.user })
+            
             if (!isCancelled){
                 setIsPending(false)
                 setError(null)
-                console.log('isPending: ', isPending)
             }
 
         } catch(err) {
