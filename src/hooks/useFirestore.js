@@ -1,6 +1,6 @@
 import {useState, useReducer, useEffect} from 'react';
 import { projectFirestore, timestamp } from "../firebase/config";
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 let initialState = {
     document: null,
@@ -25,6 +25,7 @@ const firestoreReducer = (state, action) => {
             return state
     }
 }
+
 export const useFirestore = (collectionName) => {
     const [response, dispatch] = useReducer(firestoreReducer, initialState)
     const [isCancelled, setIsCancelled] = useState(false);
@@ -39,14 +40,12 @@ export const useFirestore = (collectionName) => {
         }
     };
 
-
     // add a document from TransactionForm
     const addDocument = async (doc) => {
         dispatch({type: 'IS_PENDING'})
         try {
             const addedDocument = await addDoc(ref, { ...doc, createdAt: timestamp.fromDate(new Date()) });
             dispatchIfNotCancelled({ type: 'ADDED_DOCUMENT', payload: addedDocument });
-
         }
         catch (err){
             dispatchIfNotCancelled({type: 'ERROR', payload: err.message})
@@ -57,7 +56,8 @@ export const useFirestore = (collectionName) => {
     const deleteDocument = async (id) => {
         dispatch({type: 'IS_PENDING'})
         try{
-            await ref.doc(id).delete()
+            const docRef = doc(projectFirestore, collectionName, id);
+            await deleteDoc(docRef);
             dispatchIfNotCancelled({type: "DELETED_DOCUMENT"})
         }
         catch (err){
@@ -69,15 +69,17 @@ export const useFirestore = (collectionName) => {
     const updateDocument = async (id, updates) => {
         dispatch({type: "IS_PENDING"})
         try{
-            const updatedDocument = await ref.doc(id).update(updates)
-            dispatchIfNotCancelled({type:'UPDATED_DOCUMENT', payload: updatedDocument})
-            return updatedDocument
+            const docRef = doc(projectFirestore, collectionName, id);
+            await updateDoc(docRef, updates);
+            dispatchIfNotCancelled({type:'UPDATED_DOCUMENT', payload: updates})
+            return updates;
         }
         catch (err){
             dispatchIfNotCancelled({type: 'ERROR', payload: err.message})
             return null
         }
     }
+
     useEffect(() => {
         return () => setIsCancelled(true)
     },[])

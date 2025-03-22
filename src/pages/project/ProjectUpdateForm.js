@@ -14,7 +14,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import "./Project.css";
-import { useCollection } from '../../hooks/useCollection'
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
 
@@ -53,6 +52,7 @@ const ProjectUpdateForm = ({
     projectId,
     docCompletedDate,
     docGrade,
+    onCancel,
 }) => {
     // const { user } = useAuthContext()
     const navigate = useNavigate();
@@ -60,23 +60,15 @@ const ProjectUpdateForm = ({
     const [title, setTitle] = useState(docTitle);
     const [assignmentDetails, setAssignmentDetails] =
     useState(docAssignmentDetails);
-    const [dueDate, setDueDate] = useState(docDueDate);
+    const [dueDate, setDueDate] = useState(docDueDate ? docDueDate.toDate() : new Date());
     const [assignedCategory, setAssignedCategory] =
     useState(docAssignedCategory);
     const [error, setError] = useState(null);
     const [isCompleted, setIsCompleted] = useState(docCompleted);
-    const [grade, setGrade] = useState(docGrade);
-    const { documents } = useCollection('projects', 'liveDate', '>', today, 'liveDate', 'desc');
-    
-    if (grade === null) {
-        setGrade("");
-    }
-    let today = new Date();
-    if (docCompletedDate !== "") {
-        today = docCompletedDate.toDate();
-    }
-
-    const [completedDate, setCompletedDate] = useState(today);
+    const [grade, setGrade] = useState(docGrade || "");
+    const [completedDate, setCompletedDate] = useState(
+        docCompletedDate ? docCompletedDate.toDate() : new Date()
+    );
 
     const handleChange = (event) => {
         setIsCompleted(event.target.checked);
@@ -90,7 +82,7 @@ const ProjectUpdateForm = ({
             return;
         }
         if (!assignmentDetails) {
-            setError("Assignment Field Required");
+            setError("Assignment Details Field Required");
             return;
         }
         if (!dueDate) {
@@ -101,12 +93,6 @@ const ProjectUpdateForm = ({
             setError("Category Field Required");
             return;
         }
-        // const createdBy = {
-        //     displayName: user.displayName,
-        //     photoURL: user.photoURL,
-        //     id: user.uid
-        // }
-        // Create Document
 
         // Updating document
         const projectToUpdate = {
@@ -115,72 +101,29 @@ const ProjectUpdateForm = ({
             category: assignedCategory,
             completed: isCompleted,
             dueDate: timestamp.fromDate(new Date(dueDate)),
-            grade: grade,
-            completedDate: timestamp.fromDate(new Date(completedDate)),
+            grade: grade ? Number(grade) : null,
+            completedDate: isCompleted ? timestamp.fromDate(new Date(completedDate)) : null,
         };
 
-        // if (isCompleted && !grade){
-        //     setError('If an assignment is completed a grade must be entered.')
-        //     return
-        // }
         if (!isCompleted && grade) {
             setError(
                 "Please check assignment completed when a grade is entered.",
             );
             return;
         }
-        if (grade) {
-            if (Number(grade) >= 0 && Number(grade) <= 100) {
-                await updateDocument(projectId, {
-                    grade: Number(grade),
-                });
-            } else {
-                setError("Grade must be between 0-100.");
-                return;
-            }
+
+        if (grade && (Number(grade) < 0 || Number(grade) > 100)) {
+            setError("Grade must be between 0-100.");
+            return;
         }
 
-        if (isCompleted) {
-            await updateDocument(projectId, {
-                completedDate: timestamp.fromDate(new Date(completedDate)),
-            });
-        }
-        if (isCompleted) {
-            await updateDocument(projectId, {
-                completed: isCompleted,
-            });
-        }
-        if (docTitle !== projectToUpdate.title) {
-            await updateDocument(projectId, {
-                title: projectToUpdate.title,
-            });
-        }
-
-        if (docAssignmentDetails !== projectToUpdate.details) {
-            await updateDocument(projectId, {
-                details: assignmentDetails,
-            });
-        }
-        if (docAssignedCategory !== projectToUpdate.category) {
-            await updateDocument(projectId, {
-                category: projectToUpdate.category,
-            });
-        }
-        // if (docCompleted !== projectToUpdate.completed) {
-        //     console.log(completedDate)
-        //     await updateDocument(projectId, {
-        //         completed: projectToUpdate.completed,
-        //         completedDate: timestamp.fromDate(new Date(completedDate)),
-        //     })
-        // }
-
-        if (docDueDate !== projectToUpdate.category) {
-            await updateDocument(projectId, {
-                dueDate: timestamp.fromDate(new Date(dueDate)),
-            });
+        try {
+            await updateDocument(projectId, projectToUpdate);
             if (!response.error) {
-                navigate("/");
+                onCancel(); // Go back to view mode instead of navigating away
             }
+        } catch (err) {
+            setError("Failed to update project: " + err.message);
         }
     };
 
@@ -205,46 +148,26 @@ const ProjectUpdateForm = ({
                             id="outlined-textarea"
                             label="Assignment Details: "
                             multiline
-                            defaultValue={assignmentDetails}
+                            value={assignmentDetails}
                             onChange={(text) =>
                                 setAssignmentDetails(text.target.value)
                             }
                         />
-                        {dueDate ? (
-                            <DatePicker
-                                renderInput={(params) => (
-                                    <TextField {...params} />
-                                )}
-                                label="Set due date:"
-                                type="date"
-                                value={dueDate}
-                                sx={{ width: 220 }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                onChange={(newDate) => {
-                                    setDueDate(newDate);
-                                }}
-                                dateValue={dueDate}
-                            />
-                        ) : (
-                            <DatePicker
-                                renderInput={(params) => (
-                                    <TextField {...params} />
-                                )}
-                                label="Set due date:"
-                                type="date"
-                                value={dueDate}
-                                sx={{ width: 220 }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                onChange={(newDate) => {
-                                    setDueDate(newDate);
-                                }}
-                                dateValue={dueDate}
-                            />
-                        )}
+                        <DatePicker
+                            renderInput={(params) => (
+                                <TextField {...params} />
+                            )}
+                            label="Set due date:"
+                            type="date"
+                            value={dueDate}
+                            sx={{ width: 220 }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onChange={(newDate) => {
+                                setDueDate(newDate);
+                            }}
+                        />
                         <FormControl sx={{ m: 1, minWidth: 120 }}>
                             <InputLabel id="demo-simple-select-helper-label">
                                 Category
@@ -310,13 +233,16 @@ const ProjectUpdateForm = ({
                                 onChange={(newDate) => {
                                     setCompletedDate(newDate);
                                 }}
-                                date={completedDate}
                             />
                         )}
-                        {/*{!isUpdating*/}
-                        {/*      // ? <button className="btn">Add Assignment</button>*/}
-                        <button className="btn">Update Assignment</button>
-                        {/*}*/}
+                        <div className="button-container">
+                            <button type="button" className="btn" onClick={onCancel}>
+                                Cancel
+                            </button>
+                            <button type="submit" className="btn">
+                                Update Assignment
+                            </button>
+                        </div>
                     </Stack>
                 </LocalizationProvider>
             </form>

@@ -16,14 +16,14 @@ const ProjectSummary = ({ project }) => {
 
     const completed = project.completed;
 
-    const handleClick = () => {
-        deleteDocument(project.id);
+    const handleDelete = async () => {
+        await deleteDocument(project.id);
         navigate("/");
     };
 
-    return (
-        <div className="project-summary">
-            {isEditing ? (
+    if (isEditing) {
+        return (
+            <div>
                 <ProjectUpdateForm
                     docTitle={project.title}
                     docCompleted={project.completed}
@@ -33,47 +33,47 @@ const ProjectSummary = ({ project }) => {
                     projectId={project.id}
                     docCompletedDate={project.completedDate}
                     docGrade={project.grade}
+                    onCancel={() => setIsEditing(false)}
                 />
-            ) : (
-                <>
-                    <h2 className="page-title">{project.title}</h2>
-                    {!completed && (
-                        <p
-                            className={`due-date ${isBefore(project.dueDate.toDate(), today) && "late"}`}
-                        >
-                            Assignment is due{" "}
-                            {project.dueDate.toDate().toDateString()}
-                        </p>
-                    )}
-                    <p className="details">{project.details}</p>
-                    {project.completed && (
-                        <p>
-                            Completed:{" "}
-                            {project.completedDate.toDate().toDateString()}
-                        </p>
-                    )}
-                    {project.grade && <p>Grade: {project.grade}%</p>}
-                    <div className="comments-date">
-                        <p>
-                            Created: {project.createdAt.toDate().toDateString()}
-                        </p>
-                    </div>
+            </div>
+        );
+    }
 
-                    {/*{grade == null &&*/}
-                    <>
-                        <button className="btn-delete" onClick={handleClick}>
-                            Delete
-                        </button>
-                        <button
-                            className="btn"
-                            onClick={(event) => setIsEditing(true)}
-                        >
-                            Edit
-                        </button>
-                    </>
-                    {/*}*/}
-                </>
+    return (
+        <div className="project-summary">
+            <h2 className="page-title">{project.title}</h2>
+            {!completed && (
+                <p
+                    className={`due-date ${isBefore(project.dueDate.toDate(), today) && "late"}`}
+                >
+                    Assignment is due{" "}
+                    {project.dueDate.toDate().toDateString()}
+                </p>
             )}
+            <p className="details">{project.details}</p>
+            {project.completed && (
+                <p>
+                    Completed:{" "}
+                    {project.completedDate.toDate().toDateString()}
+                </p>
+            )}
+            {project.grade && <p>Grade: {project.grade}%</p>}
+            <div className="comments-date">
+                <p>
+                    Created: {project.createdAt.toDate().toDateString()}
+                </p>
+            </div>
+            <div className="button-container">
+                <button className="btn-delete" onClick={handleDelete}>
+                    Delete
+                </button>
+                <button
+                    className="btn"
+                    onClick={() => setIsEditing(true)}
+                >
+                    Edit
+                </button>
+            </div>
         </div>
     );
 };
