@@ -14,9 +14,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import "./Project.css";
-// import { useCollection } from '../../hooks/useCollection'
+import { useCollection } from '../../hooks/useCollection'
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
+
+
 
 export const categories = [
     { value: "art", label: "Art" },
@@ -41,6 +43,7 @@ export const categories = [
     { value: "vocabulary", label: "Vocabulary" },
 ];
 
+
 const ProjectUpdateForm = ({
     docTitle,
     docDueDate,
@@ -56,13 +59,15 @@ const ProjectUpdateForm = ({
     const { updateDocument, response } = useFirestore("projects");
     const [title, setTitle] = useState(docTitle);
     const [assignmentDetails, setAssignmentDetails] =
-        useState(docAssignmentDetails);
+    useState(docAssignmentDetails);
     const [dueDate, setDueDate] = useState(docDueDate);
     const [assignedCategory, setAssignedCategory] =
-        useState(docAssignedCategory);
+    useState(docAssignedCategory);
     const [error, setError] = useState(null);
     const [isCompleted, setIsCompleted] = useState(docCompleted);
     const [grade, setGrade] = useState(docGrade);
+    const { documents } = useCollection('projects', 'liveDate', '>', today, 'liveDate', 'desc');
+    
     if (grade === null) {
         setGrade("");
     }

@@ -1,14 +1,8 @@
 import React, {useState} from 'react';
-// import '../../storedCompletd/StoredCompleted.css'
 import {useCollection} from '../../hooks/useCollection'
-// import Avatar from "../../components/Avatar";
-// import formatDistanceToNow from "date-fns/esm/formatDistanceToNow";
-import {Link, NavLink} from "react-router-dom";
-import { isBefore } from '../../utils/dateUtils';
+import {Link} from "react-router-dom";
 import '../../components/ProjectList.css'
 import {categories} from '../create/Create'
-// import {timestamp} from "../../firebase/config";
-import CompletedGradeNeeded from "../../components/CompletedGradeNeeded";
 import DashboardIcon from "../../assets/transaction-list.png";
 import { timestamp } from '../../firebase/config';
 

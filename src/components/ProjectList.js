@@ -24,8 +24,8 @@ function isToday(d) {
   let current = new Date();
   d.setHours(0, 0, 0, 0);
   current.setHours(0, 0, 0, 0);
-  console.log("D: ", d);
-  console.log("CURRENT: ", current);
+//   console.log("D: ", d);
+//   console.log("CURRENT: ", current);
   if (isEqual(d, current)) {
     return true;
   } else;
